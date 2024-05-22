@@ -1,6 +1,5 @@
 /*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
+Copyright © 2024 Aditya Chowdhary
 */
 package cmd
 
@@ -9,8 +8,6 @@ import (
 
 	"github.com/spf13/cobra"
 )
-
-
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -45,7 +42,7 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().BoolP("integer", "i", false, "Use integers instead of file names")
+	rootCmd.PersistentFlags().StringP("directory", "d", "", "Directory of migration files")
+	cobra.MarkFlagRequired(rootCmd.Flags(), "directory")
 }
-
-

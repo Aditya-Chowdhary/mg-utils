@@ -1,11 +1,11 @@
 /*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
+Copyright © 2024 Aditya Chowdhary
 */
 package cmd
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/spf13/cobra"
 )
@@ -20,21 +20,46 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("move called")
-	},
+	Run:  moveCommand,
+	Args: cobra.ExactArgs(2),
 }
 
 func init() {
 	rootCmd.AddCommand(moveCmd)
+}
 
-	// Here you will define your flags and configuration settings.
+func moveCommand(cmd *cobra.Command, args []string) {
+	in, err := cmd.Flags().GetBool("integer")
+	if err != nil {
+		fmt.Fprintln(cmd.ErrOrStderr(), "Error while parsing flag")
+		return
+	}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// moveCmd.PersistentFlags().String("foo", "", "A help for foo")
+	if !checkMoveArguments(in, args) {
+		fmt.Fprintln(cmd.ErrOrStderr(), "Incorrect Arguments")
+		return
+	}
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// moveCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	fmt.Fprintln(cmd.ErrOrStderr(), "Success")
+}
+
+func checkMoveArguments(in bool, args []string) bool {
+	if !checkInt(args[1]) {
+		return false
+	}
+
+	if in {
+		if !checkInt(args[0]) {
+			return false
+		}
+	}
+
+	// TODO: Check if the dir and files exist
+
+	return true
+}
+
+func checkInt(s string) bool {
+	_, err := strconv.Atoi(s)
+	return err == nil
 }

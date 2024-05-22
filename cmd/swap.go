@@ -1,6 +1,5 @@
 /*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
+Copyright © 2024 Aditya Chowdhary
 */
 package cmd
 
@@ -20,21 +19,36 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("swap called")
-	},
+	Run: swapCommand,
 }
 
 func init() {
 	rootCmd.AddCommand(swapCmd)
+}
 
-	// Here you will define your flags and configuration settings.
+func swapCommand(cmd *cobra.Command, args []string) {
+	in, err := cmd.Flags().GetBool("integer")
+	if err != nil {
+		fmt.Fprintln(cmd.ErrOrStderr(), "Error while parsing flag")
+		return
+	}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// swapCmd.PersistentFlags().String("foo", "", "A help for foo")
+	if !checkSwapArguments(in, args) {
+		fmt.Fprintln(cmd.ErrOrStderr(), "Incorrect Arguments")
+		return
+	}
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// swapCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	fmt.Fprintln(cmd.ErrOrStderr(), "Success")
+}
+
+func checkSwapArguments(in bool, args []string) bool {
+	if in {
+		if !checkInt(args[0]) || !checkInt(args[1]) {
+			return false
+		}
+	}
+
+	// TODO: Check if the dir and files exist
+
+	return true
 }
