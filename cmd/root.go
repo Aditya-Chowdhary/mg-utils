@@ -13,15 +13,10 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "mg-util",
 	Short: "A CLI app to provide common utilities for migration files",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Long: `A CLI app to provide common utilities for migration files, such as move and swap. This will change the positions of both up and down files, even though you only specify one.
+	- move -i 5 2 -> Move a migration file at position 5 to position 2, increasing the position of all the files in between
+	- swap 000003_migrate.up.sql 000010_migrate.up.sql -> Swap the migration files at position 3 and 10.
+	`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -34,14 +29,6 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mg-util.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
 	rootCmd.PersistentFlags().BoolP("integer", "i", false, "Use integers instead of file names")
 	rootCmd.PersistentFlags().StringP("directory", "d", "", "Directory of migration files")
 	cobra.MarkFlagRequired(rootCmd.Flags(), "directory")

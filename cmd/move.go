@@ -14,12 +14,10 @@ import (
 var moveCmd = &cobra.Command{
 	Use:   "move",
 	Short: "Move a migration file from one sequence number to another",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long: `Move a migration file from one sequence number to another, displacing the files in between. For example: 
+	move -i 5 2 -> Move a migration file at position 5 to position 2, increasing the position of all the files in between
+	move 000003_migrate.up.sql 10 -> Move the given migration file to position 10, decreasing the position of all files in between 
+`,
 	Run:  moveCommand,
 	Args: cobra.ExactArgs(2),
 }
@@ -53,8 +51,6 @@ func checkMoveArguments(in bool, args []string) bool {
 			return false
 		}
 	}
-
-	// TODO: Check if the dir and files exist
 
 	return true
 }
